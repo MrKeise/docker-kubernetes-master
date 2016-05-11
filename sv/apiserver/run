@@ -1,13 +1,18 @@
-#!/bin/sh
+#!/bin/bash
 
 sv start etcd || exit 1
 
-KUBE_APISERVER_OPTS="--address=0.0.0.0 \
+source /etc/envvars
+
+KUBE_APISERVER_OPTS="--insecure-bind-address=0.0.0.0 \
 --cors_allowed_origins=.* \
---port=8080 \
+--insecure-port=8080 \
 --etcd_servers=http://127.0.0.1:4001 \
 --logtostderr=true \
---portal_net=10.1.1.0/24"
+--v=1 \
+--service-cluster-ip-range=10.1.0.0/16 \
+--runtime-config=extensions/v1beta1/daemonsets=true"
 
+env
 exec 2>&1
 exec kube-apiserver ${KUBE_APISERVER_OPTS}

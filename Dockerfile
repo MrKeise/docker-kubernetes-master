@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 RUN locale-gen en_US en_US.UTF-8
 ENV LANG en_US.UTF-8
+ENV TERM xterm
 RUN echo "export PS1='\e[1;31m\]\u@\h:\w\\$\[\e[0m\] '" >> /root/.bashrc
 
 #Runit
@@ -16,14 +17,14 @@ RUN echo 'export > /etc/envvars' >> /root/.bashrc
 RUN apt-get install -y vim less net-tools inetutils-ping wget curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common jq psmisc
 
 #Etcd
-RUN wget -O - https://github.com/coreos/etcd/releases/download/v2.2.2/etcd-v2.2.2-linux-amd64.tar.gz | tar zx
+RUN wget -O - https://github.com/coreos/etcd/releases/download/v2.2.4/etcd-v2.2.4-linux-amd64.tar.gz | tar zx
 RUN mv /etcd* /etcd && \
     ln -s /etcd/etcd /usr/local/bin/etcd && \
     ln -s /etcd/etcdctl /usr/local/bin/etcdctl
 RUN mkdir -p /var/lib/etcd-data
 
 #Kubernetes
-RUN wget -O - https://github.com/kubernetes/kubernetes/releases/download/v1.1.3/kubernetes.tar.gz | tar zx
+RUN wget -O - https://github.com/kubernetes/kubernetes/releases/download/v1.2.3/kubernetes.tar.gz | tar zx
 RUN tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-components 3 -C /usr/local/bin 
 
 #Node
